@@ -19,9 +19,6 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-
-Artisan::command('get:data {url}',
-    function ($url) {
-        $this->info("Displaying {$url}!");
-    })->describe('Display the info output from route/console.php.');
-
+Artisan::command('get:data', function () {
+    $this->info("Building!");
+});

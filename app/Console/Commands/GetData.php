@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Console\Command;
 
 class GetData extends Command
@@ -11,7 +12,7 @@ class GetData extends Command
      *
      * @var string
      */
-    protected $signature = 'get:data {url}';
+    protected $signature = 'get:data';
 
     /**
      * The console command description.
@@ -37,6 +38,9 @@ class GetData extends Command
      */
     public function handle()
     {
-        return $this->argument('url');
+
+        $controller = new Controller();
+        return $controller->getApiData();
+       // return $this->argument('url');
     }
 }
