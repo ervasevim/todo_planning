@@ -15,11 +15,11 @@ class Controller extends BaseController
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
     private $devs = [
-        'dev_5' =>  [ 'level' => 5, 'density' => 5,  'time' =>0 , 'tasks' => [] ],
-        'dev_4' =>  [ 'level' => 4, 'density' => 2,  'time' =>0 , 'tasks' => [] ],
-        'dev_3' =>  [ 'level' => 3, 'density' => 8,  'time' =>0 , 'tasks' => [] ],
-        'dev_2' =>  [ 'level' => 2, 'density' => 0,  'time' =>0 , 'tasks' => [] ],
         'dev_1' =>  [ 'level' => 1, 'density' => 0,  'time' =>0 , 'tasks' => [] ],
+        'dev_2' =>  [ 'level' => 2, 'density' => 0,  'time' =>0 , 'tasks' => [] ],
+        'dev_3' =>  [ 'level' => 3, 'density' => 0,  'time' =>0 , 'tasks' => [] ],
+        'dev_4' =>  [ 'level' => 4, 'density' => 0,  'time' =>0 , 'tasks' => [] ],
+        'dev_5' =>  [ 'level' => 5, 'density' => 0,  'time' =>0 , 'tasks' => [] ],
     ];
     private static $_apis = Array(
         "api_1" => Array( "url" => "http://www.mocky.io/v2/5d47f24c330000623fa3ebfa",
@@ -51,13 +51,12 @@ class Controller extends BaseController
      */
     public function __construct()
     {
-    }
-
-    public function index()
-    {
 
     }
 
+    /**
+     *
+     */
     public function getApiData()
     {
         $arr = [];
@@ -99,6 +98,9 @@ class Controller extends BaseController
         return $this->saveData($result);
     }
 
+    /**
+     * @param $data
+     */
     public function saveData($data)
     {
         foreach ($data as $items) {
@@ -110,53 +112,29 @@ class Controller extends BaseController
         }
     }
 
+    /**
+     * @return array
+     * returns weekly task schedule
+     */
     public function createPlanning()
     {
         $tasks = Task::all();
-        $task_time = 0;
-        foreach ($tasks as $task){
-            $task_time += $task->level * $task->duration;
-        }
+        $devs = $this->devs;
+        $weeks = [];
 
-
-
-        foreach ($this->devs as $dev){
-            if ($dev['density'] == min(array_column($this->devs, 'density'))){
-                dd($dev);
-                /*********/
-            }
-        }
-
-        for ($i = 1; $i<6; $i++){
-            $dev = "dev_$i";
-            while ($this->$dev < 45){
-                foreach ($tasks as $task) {
-                    $this->$dev += $task->level * $task->duration;
-                    dump( $this->$dev);
+        while ( count($tasks) > 0 ){
+            foreach ($devs as $ind => $dev){
+                foreach ($tasks as $task){
+                    if (($devs[$ind]["time"]+ ($task->level * $task->duration) / $devs[$ind]["level"]) < 45  ){
+                        $devs[$ind]["time"] += ($task->level * $task->duration) / $devs[$ind]["level"];
+                        array_push($devs[$ind]["tasks"], $task->task_id);
+                        unset($tasks[$task->id-1]);
+                    }
                 }
             }
-            die;
-            $i++;
+            array_push($weeks, $devs);
+            $devs = $this->devs;
         }
-
-        dd($task_time);
-    }
-
-    
-    private function extractArray( $arr )
-    {
-        $res = [];
-        foreach( $arr as $val )
-        {
-            if( is_array( $val ) )
-            {
-                $res = array_merge( $res, $this->extractArray( $val ) );
-            }
-            else
-            {
-                $res[] = $val;
-            }
-        }
-        return $res;
+        return $weeks;
     }
 }
