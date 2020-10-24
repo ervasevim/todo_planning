@@ -38,9 +38,9 @@ class GetData extends Command
      */
     public function handle()
     {
-
         $controller = new Controller();
+
+        $this->info('saving data...');
         return $controller->getApiData();
-       // return $this->argument('url');
     }
 }
