@@ -23,12 +23,19 @@ class Controller extends BaseController
     ];
     private static $_apis = Array(
         "api_1" => Array( "url" => "http://www.mocky.io/v2/5d47f24c330000623fa3ebfa",
-                          "task_id_path" =>  Array( Array( "type" => "string", "val" => "id"  ) ),
-                          "duration_path" =>  Array( Array( "type" => "string", "val" => "sure"  ) ),
-                          "level_path" =>  Array( Array( "type" => "string", "val" => "zorluk"  ) ),
-            "name" => "api1",
-            "fields" => Array( "level", "duration", "task_id" )
+                          "task_id_path" =>  Array(
+                              Array( "type" => "string", "val" => "id"  )
+                          ),
+                          "duration_path" =>  Array(
+                              Array( "type" => "string", "val" => "sure"  )
+                          ),
+                          "level_path" =>  Array(
+                              Array( "type" => "string", "val" => "zorluk"  )
+                          ),
+                          "name" => "api1",
+                          "fields" => Array( "level", "duration", "task_id" )
             ),
+
         "api_2" => Array( "url" => "http://www.mocky.io/v2/5d47f235330000623fa3ebf7",
                           "task_id_path" => Array(
                               Array( "type" => "own", "val" => 0 )
@@ -41,7 +48,7 @@ class Controller extends BaseController
                               Array( "type" => "key", "val" => 0 ),
                               Array( "type" => "string", "val" => "level"  )
                           ),
-            "name" => "api2",
+                          "name" => "api2",
                           "fields" => Array( "level", "duration", "task_id" )
             ),
     );
@@ -58,7 +65,6 @@ class Controller extends BaseController
      */
     public function getApiData()
     {
-        $arr = [];
         $result = Array();
         foreach (self::$_apis as $api) {
             $result[$api["name"]] = Array();
