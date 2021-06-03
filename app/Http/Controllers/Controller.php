@@ -61,7 +61,7 @@ class Controller extends BaseController
 
 
     /**
-     *get data from api and then saving to database.
+     *Get data from api and then saving to database.
      */
     public function getApiData()
     {
